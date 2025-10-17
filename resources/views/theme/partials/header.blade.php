@@ -1,3 +1,8 @@
+@php
+
+    $headerCategories = \App\Models\Category::take(2)->get();
+@endphp
+
 <header class="header_area">
     <div class="main_menu">
         <nav class="navbar navbar-expand-lg navbar-light">
@@ -17,23 +22,33 @@
                     <ul class="nav navbar-nav menu_nav justify-content-center">
                         <li class="nav-item @yield('home-active')"><a class="nav-link" href="{{route('theme.index')}}">Home</a>
                         </li>
+
                         <li class="nav-item submenu dropdown @yield('category-active')">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-haspopup="true"
                                aria-expanded="false">Categories</a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" href="{{route('theme.category')}}">Food</a>
-                                </li>
-                                <li class="nav-item"><a class="nav-link"
-                                                        href="{{route('theme.category')}}">Bussiness</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{{route('theme.category')}}">Travel</a>
-                                </li>
-                            </ul>
+                            @if(count($headerCategories) > 0)
+
+                                <ul class="dropdown-menu">
+                                    @foreach($headerCategories as $category)
+                                    <li class="nav-item"><a class="nav-link" href="{{route('theme.category')}}">{{$category->name}}</a>
+                                    </li>
+                                    @endforeach
+{{--                                    <li class="nav-item"><a class="nav-link"--}}
+{{--                                                            href="{{route('theme.category')}}">Bussiness</a></li>--}}
+{{--                                    <li class="nav-item"><a class="nav-link"--}}
+{{--                                                            href="{{route('theme.category')}}">Travel</a>--}}
+{{--                                    </li>--}}
+                                </ul>
+                            @endif
                         </li>
+
                         <li class="nav-item @yield('contact-active')"><a class="nav-link"
                                                                          href="{{route('theme.contact')}}">Contact</a>
                         </li>
                     </ul>
+                    {{--                    {{ dd($headerCategories->pluck('name')) }}--}}
+
 
                     <!-- Add new blog -->
                     <a href="#" class="btn btn-sm btn-primary mr-2">Add New</a>
@@ -51,7 +66,8 @@
                                     <li class="nav-item">
                                         <form action="{{ route('logout') }}" method="POST">
                                             @csrf
-                                            <a class="nav-link" href="javascript:;" onclick="this.closest('form').submit();">Logout</a>
+                                            <a class="nav-link" href="javascript:;"
+                                               onclick="this.closest('form').submit();">Logout</a>
                                         </form>
                                     </li>
 
